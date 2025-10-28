@@ -31,9 +31,7 @@ class Particle:
     
     def update(self):
         """Update particle position."""
-        self.progress += self.speed
-        if self.progress > 1:
-            self.progress = 0
+        self.progress = (self.progress + self.speed) % 1.0
     
     def get_position(self):
         """Calculate current position on spiral."""

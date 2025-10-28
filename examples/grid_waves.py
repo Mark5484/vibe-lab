@@ -15,17 +15,13 @@ from src.colors import generate_palette, interpolate_color
 from src.geometry import grid_points
 
 
-def draw_grid_waves(screen, width, height, time_offset=0):
+def draw_grid_waves(screen, width, height, palette, time_offset=0):
     """Draw a grid of circles with wave-like size and color variations."""
     # Grid parameters
     cols, rows = 30, 20
     padding = 50
     grid_width = width - padding * 2
     grid_height = height - padding * 2
-    
-    # Generate color palette
-    base_hue = random.randint(0, 360)
-    palette = generate_palette(base_hue=base_hue, count=5, saturation=0.7, value=0.85)
     
     # Clear screen
     screen.fill((20, 20, 30))
@@ -77,6 +73,10 @@ def main():
     pygame.display.set_caption("Vibe Lab - Grid Waves")
     clock = pygame.time.Clock()
     
+    # Generate initial color palette
+    base_hue = random.randint(0, 360)
+    palette = generate_palette(base_hue=base_hue, count=5, saturation=0.7, value=0.85)
+    
     # Animation variables
     time_offset = 0
     animate = True
@@ -98,6 +98,9 @@ def main():
                     animate = not animate
                     print(f"Animation {'enabled' if animate else 'paused'}")
                 elif event.key == pygame.K_r:
+                    # Regenerate palette when randomizing
+                    base_hue = random.randint(0, 360)
+                    palette = generate_palette(base_hue=base_hue, count=5, saturation=0.7, value=0.85)
                     time_offset = random.random() * 10
                     print("Randomized pattern")
         
@@ -106,7 +109,7 @@ def main():
             time_offset += dt * 2
         
         # Draw
-        draw_grid_waves(screen, width, height, time_offset)
+        draw_grid_waves(screen, width, height, palette, time_offset)
         
         pygame.display.flip()
     
